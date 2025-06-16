@@ -1,1 +1,13 @@
-<!DOCTYPE html><html><head><script>setTimeout(()=>{location.href='pamslidia://signin'+location.search},100);</script></head><body>Login successful, you can <a href='#' onclick='window.close();return false;'>close</a> this window/tab.</body></html>
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+		
+		const params = new URLSearchParams(window.location.search);
+		const pamsapp = 'pams' + params.get('pamsapp');
+		
+		setTimeout(()=>{location.href=pamsapp + '://signin'+location.search},100);
+		</script>
+	</head>
+	<body>Login successful, you can <a href='#' onclick='window.close();return false;'>close</a> this window/tab.</body>
+</html>
