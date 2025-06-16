@@ -3,10 +3,7 @@
 	<head>
 		<script>
 		
-		const params = new URLSearchParams(window.location.search);
-		const pamsapp = 'pams' + params.get('pamsapp');
-		
-		setTimeout(()=>{location.href=pamsapp + '://signin'+location.search},100);
+		setTimeout(()=>{location.href='pamsdia://signin'+location.search},100);
 		</script>
 	</head>
 	<body>Login successful, you can <a href='#' onclick='window.close();return false;'>close</a> this window/tab.</body>
