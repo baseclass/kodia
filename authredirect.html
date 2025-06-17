@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+		
+		const params = new URLSearchParams(window.location.search);
+		const action = params.get("a");
+		
+		const state = params.get("state");
+
+		if (state) {
+			// Split by '!' and get the last part
+			const port = state.split('!').pop();
+			console.log("Dynamic port:", port);
+			location.href='http://127.0.0.1:' + port + '/' + action +location.search;
+		} else {
+			console.log("No state parameter found.");
+		}
+		</script>
+	</head>
+	<body>Something went wrong missing query params</body>
+</html>
