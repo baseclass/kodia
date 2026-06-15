@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Downloading .NET Runtime...</title>
+
+    <script>
+        // ─── Configuration ────────────────────────────────────────────────────────
+        var DOWNLOAD_LINKS = {
+            x86: "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-10.0.9-windows-x86-installer",
+            x64: "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-10.0.9-windows-x64-installer"
+        };
+        // ─────────────────────────────────────────────────────────────────────────
+
+        function getQueryParam(name) {
+            var params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        function detectArch() {
+            // Modern browsers: navigator.userAgentData
+            if (navigator.userAgentData && navigator.userAgentData.architecture) {
+                var arch = navigator.userAgentData.architecture.toLowerCase();
+                if (arch === "x86") return "x86";
+                if (arch === "x86_64" || arch === "x64") return "x64";
+                // ARM64 or anything else → fall through to default
+            }
+
+            // Legacy fallback: parse userAgent string
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.indexOf("wow64") !== -1 || ua.indexOf("win64") !== -1 || ua.indexOf("x86_64") !== -1) {
+                return "x64";
+            }
+            if (ua.indexOf("win32") !== -1 && ua.indexOf("wow64") === -1) {
+                // 32-bit process on 32-bit OS
+                return "x86";
+            }
+
+            // Default
+            return "x64";
+        }
+
+        function resolveLink() {
+            var arch = getQueryParam("arch");
+
+            if (!arch || !DOWNLOAD_LINKS[arch]) {
+                arch = detectArch();
+            }
+
+            return DOWNLOAD_LINKS[arch] || DOWNLOAD_LINKS["x64"];
+        }
+
+        var targetUrl = resolveLink();
+        window.location.href = targetUrl;
+    </script>
+
+    <!-- Fallback meta-refresh is set dynamically below once JS runs,
+         but we also keep a noscript note for browsers without JS. -->
+</head>
+<body>
+    <p>
+        If the download doesn't start automatically,
+        <a id="download-link" href="#">click here</a>.
+    </p>
+
+    <script>
+        // Update the visible link for users who land on this page
+        var link = document.getElementById("download-link");
+        link.href = targetUrl;
+    </script>
+
+    <noscript>
+        <p>
+            JavaScript is required to auto-detect your architecture.<br>
+            Please choose your installer manually:<br>
+            <a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-10.0.9-windows-x64-installer">x64 installer</a> |
+            <a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-10.0.9-windows-x86-installer">x86 installer</a>
+        </p>
+    </noscript>
+</body>
+</html>
